@@ -7,7 +7,8 @@ sys.path.append('../')
 from plask import *
 import usesearch
 
-#def add_title():
+def add_title():
+    pass
 
 
 def layout():
@@ -26,7 +27,7 @@ def layout():
     button.set_size(60, 26)
     button.set_location(3, 0)
     ev = uievent('http://127.0.0.1:5000/', button, pyelement.onclick)
-    ev.add_call_ui()
+    ev.add_call_ui(add_title)
     params = jparams()
     params.append("input", titletitle.client_get_input_text())
     onsev = on_server_response()

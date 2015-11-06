@@ -31,6 +31,7 @@ if __name__ == '__main__':
     conn = pymongo.Connection('localhost',27017)
     db = conn.webseach
     gethtml.collection = db.webpage
+    gethtml.collection_url_profile = db.urlprofile
     collection_key = db.keys
 
     t = 0

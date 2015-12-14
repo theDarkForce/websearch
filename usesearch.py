@@ -2,12 +2,14 @@
 # usesearch
 # create at 2015/10/31
 # autor: qianqians
+
 import sys
 sys.path.append('../')
 from pagecache import *
 import pymongo
 import time
 from doclex import doclex
+from webget import gethtml
 
 collection_page = None
 collection_key = None
@@ -52,7 +54,17 @@ def find_page(input, index):
     cache_page['input']['timetmp'] = time.time()
     cache_page['input']['urllist'] = page_list
 
-    return page_list[index*10: index*1+10]
+    page_list = page_list[index*10: index*1+10]
+
+    for url in page_list:
+        c = gethtml.collection_url_profile.find(url)
+        for i in c:
+            page_list[url]["profile"] = i
+        c = gethtml.collection_url_title.find(url)
+        for i in c:
+            page_list[url]["title"] = i
+
+    return page_list
 
 def init():
     conn = pymongo.Connection('localhost',27017)

@@ -2,8 +2,13 @@
 # webseach
 # create at 2015/10/30
 # autor: qianqians
+
 import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+
 sys.path.append('../')
+
 from webget import gethtml
 import pymongo
 from doclex import doclex
@@ -18,7 +23,12 @@ def seach(urllist):
 urllist = ["http://www.qidian.com/Default.aspx",
            "http://www.zongheng.com/",
            "http://chuangshi.qq.com/",
-           "http://www.jjwxc.net/"]
+           "http://www.jjwxc.net/",
+           "https://www.hao123.com/",
+           "http://sports.sina.com.cn/",
+           "http://www.tom.com/",
+           "http://www.qq.com/",
+           "http://www.163.com/"]
 
 def refkeywords():
     c = collection_key.find()
@@ -32,6 +42,7 @@ if __name__ == '__main__':
     db = conn.webseach
     gethtml.collection = db.webpage
     gethtml.collection_url_profile = db.urlprofile
+    gethtml.collection_url_title = db.urltitle
     collection_key = db.keys
 
     t = 0

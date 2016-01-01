@@ -31,13 +31,17 @@ def find_page(input, index):
         else:
             c = collection_page.find({"key":k})
             for i in c:
-                page_list.append(i)
+                page = {}
+                page['url'] = i['url']
+                page['timetmp'] = i['timetmp']
+                page['key'] = i['key']
+                page_list.append(page)
             key_page['input'] = {}
             key_page['input']['timetmp'] = time.time()
             key_page['input']['urllist'] = page_list
 
     if len(page_list) == 0:
-        keys = doclex.lex(keys)
+        #keys = doclex.lex(keys)
         for k in keys:
             if key_page.has_key(k):
                 key_page['input']['timetmp'] = time.time()
@@ -45,7 +49,11 @@ def find_page(input, index):
             else:
                 c = collection_page.find({"key":k})
                 for i in c:
-                    page_list.append(i)
+                    page = {}
+                    page['url'] = i['url']
+                    page['timetmp'] = i['timetmp']
+                    page['key'] = i['key']
+                    page_list.append(page)
                 key_page['input'] = {}
                 key_page['input']['timetmp'] = time.time()
                 key_page['input']['urllist'] = page_list
@@ -57,17 +65,16 @@ def find_page(input, index):
     page_list = page_list[index*10: index*1+10]
 
     for url in page_list:
-        c = gethtml.collection_url_profile.find(url)
+        c = gethtml.collection_url_profile.find({'key':url['url']})
         for i in c:
-            page_list[url]["profile"] = i
-        c = gethtml.collection_url_title.find(url)
+            url["profile"] = i['urlprofile']
+        c = gethtml.collection_url_title.find({'key':url['url']})
         for i in c:
-            page_list[url]["title"] = i
+            url["title"] = i['title']
+
+    print page_list
 
     return page_list
 
 def init():
-    conn = pymongo.Connection('localhost',27017)
-    db = conn.webseach
-    collection_page = db.webpage
-    collection_key = db.keys
+    pass

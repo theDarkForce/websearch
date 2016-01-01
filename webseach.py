@@ -17,18 +17,34 @@ import time
 collection_key = None
 
 def seach(urllist):
-    for url in urllist:
-        gethtml.process_link(url)
+    def process_urllist(url_list):
+        for url in url_list:
+            list = gethtml.process_url(url)
+            if list is not None:
+                process_urllist(list)
 
-urllist = ["http://www.qidian.com/Default.aspx",
+    for url in urllist:
+        list = gethtml.process_url(url)
+        try:
+            process_urllist(list)
+        except:
+            import traceback
+            traceback.print_exc()
+
+urllist = ["http://sina.com.cn/",
+           "http://www.tom.com/",
+           "http://www.qq.com/",
+           "http://www.qidian.com/Default.aspx",
            "http://www.zongheng.com/",
            "http://chuangshi.qq.com/",
            "http://www.jjwxc.net/",
            "https://www.hao123.com/",
-           "http://sports.sina.com.cn/",
-           "http://www.tom.com/",
-           "http://www.qq.com/",
-           "http://www.163.com/"]
+           "http://www.163.com/",
+           "http://jj.hbtv.com.cn/",
+           "https://www.taobao.com/",
+           "http://www.jd.com/",
+           "http://www.suning.com/",
+           "http://jiadian.gome.com.cn/"]
 
 def refkeywords():
     c = collection_key.find()
@@ -51,4 +67,5 @@ if __name__ == '__main__':
         if timetmp > 86400:
             refkeywords()
             t = time.time()
+        #urllist = seach(urllist)
         seach(urllist)

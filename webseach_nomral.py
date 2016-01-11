@@ -17,16 +17,51 @@ import time
 collection_key = None
 
 def seach(urllist):
+    def process_keyurl(keyurl):
+        if keyurl is not None:
+                for key, urllist in keyurl.iteritems():
+                    for url in urllist:
+                        urlinfo = gethtml.process_url(url)
+
+                        if urlinfo is None:
+                            continue
+
+                        list, keyurl1 = urlinfo
+
+                        if list is not None:
+                            gethtml.collection.insert({'key':key, 'url':url, 'timetmp':time.time()})
+
     def process_urllist(url_list):
         for url in url_list:
-            list = gethtml.process_url(url)
+            urlinfo = gethtml.process_url(url)
+
+            if urlinfo is None:
+                continue
+
+            list, keyurl = urlinfo
+
             if list is not None:
-                process_urllist(list)
+                 for url in list:
+                     gethtml.process_url(url)
+
+            process_keyurl(keyurl)
+
+            time.sleep(0.1)
 
     for url in urllist:
-        list = gethtml.process_url(url)
+        print url, "root url"
+
+        urlinfo = gethtml.process_url(url)
+
+        if urlinfo is None:
+            continue
+
+        list, keyurl = urlinfo
+
         try:
             process_urllist(list)
+            process_keyurl(keyurl)
+
         except:
             import traceback
             traceback.print_exc()
